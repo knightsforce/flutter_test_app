@@ -13,29 +13,9 @@ class RandomWordsState extends State<RandomWords> {
 
   int index;
 
-  bool alreadySaved; //Сохранено ли слово
-
-  WordPair tempPair;//Для хранения значение
-
-  stateHandler() {
-    
-    if(alreadySaved) {
-      _saved.remove(tempPair);
-    } else {
-      _saved.add(tempPair);
-    }
-    
-  }
-
-  _onTap() {
-    setState(stateHandler);
-  }
-
   Widget _buildRow(WordPair pair) {
     
-    alreadySaved = _saved.contains(pair);
-    
-    tempPair = pair;
+    final alreadySaved = _saved.contains(pair);
 
     return ListTile(
       title: Text(
@@ -46,7 +26,15 @@ class RandomWordsState extends State<RandomWords> {
         alreadySaved ? Icons.favorite : Icons.favorite_border,
         color: alreadySaved ? Colors.red : null
       ),
-      onTap: _onTap
+      onTap: () {
+        setState(() {
+          if(alreadySaved) {
+            _saved.remove(pair);
+          } else {
+            _saved.add(pair);
+          }
+        });
+      }
     );
   }
 
